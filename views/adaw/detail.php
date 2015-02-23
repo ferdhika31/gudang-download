@@ -44,9 +44,9 @@
 			<center><h3><?php echo $data->judul_artikel;?></h3></center>
 			<hr>
 			<center>
+				<button onclick="location.href='<?php echo $url;?>'"><i class='fa fa-home'></i> Beranda</button>
+				<button onclick="location.href='<?php echo $data->link_artikel;?>'"><i class='fa fa-sign-in'></i> Baca Artikel</button>
 				<form action='<?php echo $this->location('donlod/ambil');?>' method='post'>
-					<button onclick="location.href='<?php echo $url;?>'"><i class='fa fa-home'></i> Beranda</button>
-					<button onclick="location.href='<?php echo $data->link_artikel;?>'"><i class='fa fa-sign-in'></i> Baca Artikel</button>
 					<input type='hidden' name='A_id' value="<?php echo $data->id;?>" />
 					<input type='hidden' name='A_url' value="<?php echo $data->link_download;?>" />
 					<button value="Download" name="donlod"><i class='fa fa-download'></i> Download</button>
