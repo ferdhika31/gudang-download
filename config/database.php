@@ -1,14 +1,20 @@
 <?php
 
+$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+$server = $url["host"];
+$username = $url["user"];
+$password = $url["pass"];
+$db = substr($url["path"], 1);
+
 return array(
     
     'default' => array(
         'driver' => 'mysqli',
-        'host' => 'localhost',
+        'host' => $server,
         'port' => 3306,
-        'user' => 'root',
-        'password' => '',
-        'database' => 'db_dw',
+        'user' => $username,
+        'password' => $password,
+        'database' => $db,
         'tablePrefix' => '',
         'charset' => 'utf8',
         'collate' => 'utf8_general_ci',
