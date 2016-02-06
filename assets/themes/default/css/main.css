@@ -1,0 +1,249 @@
+/* Space out content a bit */
+body {
+	color: #333;
+	margin-top: 60px;
+}
+
+.footer {
+	margin-top: 5rem;
+	padding-top: 2rem;
+}
+
+img {
+	max-width: 100%;
+}
+
+blockquote {
+	font-size: 1em;
+	padding: 0.3em 0.8em;
+}
+	blockquote ol {
+		padding-left: 1.5em;
+	}
+
+@media only screen and (min-width: 500px) {
+	blockquote {
+		font-size: 1.1em;
+		padding: 0.4em 1.4em;
+	}
+		blockquote ol {
+			padding-left: 2.75em;
+		}
+}
+
+.post-list {
+	font-size: 1.75rem;
+	list-style-type: none;
+	max-width: 40em;
+	padding-left: 0;
+}
+
+.post-list__post {
+	clear: left;
+	list-style-type: none;
+	margin-bottom: 1.5em;
+	padding-left: 0;
+}
+
+.post-list__date {
+	color: #aaa;
+	display: block;
+	font-size: 0.8em;
+}
+
+.post-list__link {
+	font-size: 1.2em;
+	/*font-weight: bold;*/
+}
+
+.post-list__preview {
+	font-size: 0.8em;
+}
+
+article {
+}
+	article img {
+		border: 5px solid #eee;
+	}
+	article img.no-border {
+		border: 0;
+	}
+
+	.article-metadata {
+		color: #777;
+	}
+
+	article ul, article ol {
+		margin-bottom: 1.2em;
+	}
+
+	/* Default h3s are just a touch too close to the h2 size */
+	article h3, article .h3 {
+		font-size: 24px;
+	}
+
+.homepage-headshot {
+	border-radius: 50%;
+	border: 5px solid #eee;
+	display: block;
+	margin: 1em auto 3em;
+	max-width: 200px;
+	position: relative;
+}
+
+.homepage-body {
+	font-size: 1.3em;
+}
+
+.homepage-body p {
+	max-width: 40em;
+}
+
+.homepage-email-signup {
+	background: #fafafa;
+	border-radius: 0.5em;
+	border: 1px solid #ddd;
+	font-size: 1.2em;
+	margin: 2em auto;
+	max-width: 25em;
+	padding: 1.2em;
+}
+
+.newsletter p {
+	font-size: 1.2em;
+}
+
+.intro, p.intro {
+	font-size: 1.4em;
+}
+
+.right-rail {
+	margin-top: 1em;
+}
+	.rail-bio {
+		color: #444;
+		margin: 0 auto;
+	}
+	.rail-bio__headshot {
+		border-radius: 50%;
+		border: 5px solid #ddd;
+		display: block;
+		margin: 1em auto;
+		max-width: 200px;
+		width: 100%;
+	}
+
+	.right-rail hr {
+		width: 66%;
+	}
+
+	.rail-email-signup {
+		background: #fafafa;
+		border-radius: 0.5em;
+		border: 1px solid #ddd;
+		padding: 1em;
+	}
+
+	.rail-email-signup .form-control {
+		margin-bottom: 0.75em;
+	}
+
+	.rail-email-signup input[type=submit] {
+		padding: 0.75em 1em;
+	}
+
+.single {
+	font-size: 1.2em;
+}
+
+.article {
+	font-size: 1.1em;
+}
+
+pre[class*="language-"] {
+	margin-bottom: 1em;
+}
+
+.share-buttons img {
+    width: 35px;
+    padding: 5px;
+    border: 0;
+    box-shadow: 0;
+    display: inline;
+}
+
+/* Tweak peach */
+.navbar-inverse, .btn-primary {
+	background-color: #6E6B5C;
+	border-color: #6E6B5C;
+	color: #ffffff;
+}
+
+.navbar-inverse .navbar-nav li a:hover, .navbar-inverse .navbar-brand:hover{
+	background-color: #8E8D89;
+	color: #ffffff;
+}
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus{
+	background-color: #8E8D89;
+	color: #ffffff;
+}
+
+.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+    background-color: #8E8D89;
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: #8E8D89;
+}
+
+.navbar-inverse .navbar-toggle {
+    border-color: #6E6B5C;
+}
+
+.pagination > li > a, .pagination > li > span {
+    position: relative;
+    float: left;
+    padding: 10px 15px;
+    line-height: 1.42857;
+    text-decoration: none;
+    color: #FFF;
+    background-color: #6E6B5C;
+    border: 1px solid transparent;
+    margin-left: -1px;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    z-index: 3;
+    color: #FFF;
+    background-color: #8E8D89;
+    border-color: transparent;
+    cursor: default;
+}
+
+.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+    z-index: 2;
+    color: #FFF;
+    background-color: #8E8D89;
+    border-color: transparent;
+}
+
+a {
+	color: #6E6B5C;
+}
+
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 30px; height: 0; overflow: hidden;
+}
+
+.video-container iframe,
+.video-container object,
+.video-container embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
