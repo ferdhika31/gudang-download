@@ -10,8 +10,7 @@ use Resources;
 
 class M_pengaturan{
 
-	public function __construct()
-	{
+	public function __construct(){
 		$this->db = new Resources\Database;
 		$this->tb = "tb_pengaturan";
 		session_start();
@@ -24,5 +23,14 @@ class M_pengaturan{
 			$i++;
 		}
 	}
+
+	public function tampil(){
+		$query = $this->db->select()->from($this->tb)->getAll(); 
+    	return $query;
+	}
+
+	public function ubah($isi=array(),$id=array()){
+        $query = $this->db->update($this->tb, $isi, $id); 
+    }
 	
 }

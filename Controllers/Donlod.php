@@ -1,55 +1,51 @@
 <?php 
+namespace Controllers;
+use Models,Resources;
+
+include_once (dirname(__FILE__) . "/Main.php");
+
+class Donlod extends Main{
+
 	/**
 		* @Author				: Localhost {Ferdhika Yudira}
 		* @Email				: fer@dika.web.id
 		* @Web					: http://dika.web.id
 		* @Date					: 2015-02-18 16:44:36
 	**/
-namespace Controllers;
-use Resources, Models;
-
-class Donlod extends Resources\Controller{
 
 	function __construct(){
 		parent::__construct();
-		$this->pengaturan = new Models\M_pengaturan;
-		$this->session = new Resources\Session();
-		$this->theme = $_SESSION['site_theme'];
+		
 		$this->dw = new Models\M_download;
 		$this->pengguna = new Models\M_pengguna;
 		$this->pagination = new Resources\Pagination; 
-		$this->request = new Resources\Request;
+
 	}
 
 	public function index($hal=1){
 		if(!$this->session->getValue('isLogin')){
     		$this->redirect('donlod/masuk');	
     	}
-		$this->pagination = new Resources\Pagination();
         
         $hal = (int) $hal;
 		$limit = $_SESSION['site_page'];
-		//$piew['url'] = $this->uri->baseUri;
-		$piew['url'] = $this->location();
-		//$piew['asset'] = $this->location('assets')."/".$this->theme."/";
-		$piew['asset'] = $this->uri->baseUri."assets/".$this->theme."/";
-		$piew['tema'] = $this->theme."/";
-		$piew['hal'] = $hal;
+		
+		$this->global_data['hal'] = $hal;
 			
-        $piew['data'] = $this->dw->ambilDonlod($hal, $limit);
+      	$this->global_data['data'] = $this->dw->ambilDonlod($hal, $limit);
 	
-		$piew['pageLinks'] = $this->pagination->setOption(
+		$this->global_data['pageLinks'] = $this->pagination->setOption(
 			array(
 		    	'limit' => $limit,
 		    	'base' => $this->location('donlod/index/%#%/'),
 		    	'total' => count($this->dw->tampil()),
 		    	'current' => $hal,
-		    	'nextText' => 'Selanjutnya',
-		    	'prevText' => 'Sebelumnya'
+		    	'nextText' => '>>',
+		    	'prevText' => '<<'
 			)
 	    )->getUrl();
         
-        $this->output($this->theme.'/dashboard', $piew);
+        $this->tampilan('dashboard');
 	}
 
 	public function masuk(){
@@ -60,19 +56,13 @@ class Donlod extends Resources\Controller{
     		$ref_url = $this->uri->baseUri;
     	}
 
-		//jika session login sudah di set maka di direk ke halaman dashboard
+		// //jika session login sudah di set maka di direk ke halaman dashboard
     	if($this->session->getValue('isLogin')){
     		$this->redirect($ref_url);	
     	}
 
-    	//variabel error pada halaman form login
-    	$piew['error'] = '';
-    	$piew['ref_url'] = "/?url=".$ref_url;
-    	//$piew['url'] = $this->uri->baseUri;
-    	$piew['url'] = $this->location();
-		//$piew['asset'] = $this->location('assets')."/".$this->theme."/";
-		$piew['asset'] = $this->uri->baseUri."assets/".$this->theme."/";
-		$piew['tema'] = $this->theme."/";
+    	$this->global_data['ref_url'] = "/?url=".$ref_url;
+
 
     	//buat tombol masuk di tekan
 		if(isset($_POST['A_masuk'])){
@@ -80,7 +70,15 @@ class Donlod extends Resources\Controller{
 			$cek_mail = $this->resources->Validation->isEmail($email);
 
 			if(empty($cek_mail)){
-				$piew['error'] = "Email tidak valid!";
+				$notifHtml = "
+					<div class=\"alert alert-info alert-dismissable\">
+						<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>
+						<h4><i class=\"icon fa fa-ban\"></i> Alert!</h4>
+						Email tidak valid!
+					</div>
+				";
+
+				$this->global_data['notif'] = $notifHtml;
 			}else{
 				$user = $this->pengguna->masuk($email);
 				if($user){
@@ -96,19 +94,42 @@ class Donlod extends Resources\Controller{
 						// Redirect ke halaman utama.
 						$this->redirect($ref_url);
 					}else if($user->stt==2){
-						$piew['error'] = 'Email di banned gan.';
+						$notifHtml = "
+						<div class=\"alert alert-warning alert-dismissable\">
+							<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>
+							<h4><i class=\"icon fa fa-ban\"></i> Alert!</h4>
+							Email belum di aktivasi gan.
+						</div>
+					";
+
+					$this->global_data['notif'] = $notifHtml;
 					}else{ //banned
-						$piew['error'] = 'Email belum di aktivasi gan.';
+						$notifHtml = "
+							<div class=\"alert alert-danger alert-dismissable\">
+								<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>
+								<h4><i class=\"icon fa fa-ban\"></i> Alert!</h4>
+								Email di banned gan.
+							</div>
+						";
+
+						$this->global_data['notif'] = $notifHtml;
 					}
 					
 				}else{
-					$piew['error'] = 'Email belum terdaftar gan.';
+					$notifHtml = "
+						<div class=\"alert alert-warning alert-dismissable\">
+							<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>
+							<h4><i class=\"icon fa fa-ban\"></i> Alert!</h4>
+							Email belum terdaftar gan.
+						</div>
+					";
+
+					$this->global_data['notif'] = $notifHtml;
 				}
 			}
 		}
-        
-        //echo $ref_url;
-        $this->output($this->theme.'/masuk', $piew); //load view
+   
+        $this->tampilan('masuk');
 	}
 
 	public function daftar(){
@@ -124,14 +145,7 @@ class Donlod extends Resources\Controller{
     		$this->redirect($ref_url);	
     	}
 
-    	//variabel error pada halaman form login
-    	$piew['error'] = '';
-    	$piew['ref_url'] = "/?url=".$ref_url;
-    	//$piew['url'] = $this->uri->baseUri;
-    	$piew['url'] = $this->location();
-		//$piew['asset'] = $this->location('assets')."/".$this->theme."/";
-		$piew['asset'] = $this->uri->baseUri."assets/".$this->theme."/";
-		$piew['tema'] = $this->theme."/";
+    	$this->global_data['ref_url'] = "/?url=".$ref_url;
 
 		//buat tombol daftar di tekan
 		if (isset($_POST['A_daftar'])){
@@ -139,7 +153,15 @@ class Donlod extends Resources\Controller{
 			$cek_mail = $this->resources->Validation->isEmail($email);
 
 			if(empty($cek_mail)){
-				$piew['error'] = "Email tidak valid!";
+				$notifHtml = "
+						<div class=\"alert alert-danger alert-dismissable\">
+							<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>
+							<h4><i class=\"icon fa fa-ban\"></i> Alert!</h4>
+							Email tidak valid gan.
+						</div>
+					";
+
+					$this->global_data['notif'] = $notifHtml;
 			}else{
 				$user = $this->pengguna->cek_email($email);
 				if(!$user){
@@ -149,27 +171,37 @@ class Donlod extends Resources\Controller{
 						'aktivasi' => '',
 						'hit' => 0,
 						'tgl_daftar' => Date("Y-m-d H:i:s"),
-						'tgl_aktivasi' => Date("Y-m-d H:i:s")
+						'tgl_aktivasi' => Date("Y-m-d H:i:s"),
+						'ip' => $_SERVER['REMOTE_ADDR']
 					);
 
 					$this->pengguna->simpan($dat);
 					// Redirect ke halaman sebelumnya.
 					//$this->redirect($ref_url);
-					$piew['error'] = 'Sukses mendaftar, silahkan <a href="'.$this->uri->baseUri.'donlod/masuk">login gan.</a>';
+					$notifHtml = "
+						<div class=\"alert alert-warning alert-dismissable\">
+							<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>
+							<h4><i class=\"icon fa fa-ban\"></i> Alert!</h4>
+							Sukses mendaftar, silahkan <a href='".$this->uri->baseUri."donlod/masuk'>login gan.</a>
+						</div>
+					";
+
+					$this->global_data['notif'] = $notifHtml;
 				}else{
-					$piew['error'] = 'Email sudah terdaftar.';
+					$notifHtml = "
+						<div class=\"alert alert-warning alert-dismissable\">
+							<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>
+							<h4><i class=\"icon fa fa-ban\"></i> Alert!</h4>
+							Email sudah terdaftar gan.
+						</div>
+					";
+
+					$this->global_data['notif'] = $notifHtml;
 				}
 			}
 		}
 
-		
-
-		$this->output($this->theme.'/daftar', $piew); //load view
-	}
-
-	public function keluar(){
-		$this->session->destroy();
-		$this->redirect('donlod');
+		$this->tampilan('daftar'); //load view
 	}
 
 	public function detail(){
@@ -180,16 +212,9 @@ class Donlod extends Resources\Controller{
     		$this->redirect('donlod/masuk/?url='.$this->location('donlod/detail/'.$id));	
     	}
 
-		$piew = array(
-			//'url' => $this->uri->baseUri,
-			'url' => $this->location(),
-			//'asset' => $this->location('assets')."/".$this->theme."/",
-			'asset' => $this->uri->baseUri."assets/".$this->theme."/",
-			'tema' => $this->theme."/",
-			'data' => $this->dw->lihat($id)
-		);
+		$this->global_data['data'] = $this->dw->lihat($id);
 
-		$this->output($this->theme.'/detail', $piew);
+		$this->tampilan('detail');
 	}
 
 	public function ambil(){
@@ -202,6 +227,10 @@ class Donlod extends Resources\Controller{
 		}else{
 			$this->redirect();
 		}
-		
+	}
+
+	public function keluar(){
+		$this->session->destroy();
+		$this->redirect('donlod');
 	}
 }

@@ -15,3 +15,17 @@
 </a>
 <p><?php echo $_SESSION['site_title'];?></p>
 </header>
+
+<div id='container'>
+	<div class="block">
+		<a target="_top" class="main" href="<?php echo $this->location();?>">Beranda</a>
+		<a target="_top" class="main" href="<?php echo $this->location('daftar/file');?>">Top File</a>
+		<a target="_top" class="main" href="<?php echo $this->location('daftar/akun');?>">Top Downloader</a>
+		<?php
+		if($this->session->getValue('isLogin')){
+			echo "<a target=\"_top\" class=\"main\" href='".$this->location('donlod/keluar')."'>Keluar</a>";
+		}else{
+			echo "<a target=\"_top\" class=\"main\" href='".$this->location('donlod/masuk')."'>Masuk</a>";
+		}
+		?>
+	</div>
